@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ShopFlow — Payments | Paila Akhil</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link href="style.css" rel="stylesheet"/>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <span><i class="bi bi-lightning-fill"></i> Real-time Kafka Events &nbsp;|&nbsp; <i class="bi bi-shield-check"></i> Redis Idempotency &nbsp;|&nbsp; <i class="bi bi-database-fill"></i> MySQL Persistence</span>
+  <span class="topbar-right">Built by <strong>Paila Akhil</strong> · Spring Boot 3.5</span>
+</div>
+
+<!-- NAVBAR -->
+<nav class="main-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="logo-icon"><i class="bi bi-bag-fill"></i></div>
+      <div class="logo-text">Shop<span>Flow</span></div>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link"><i class="bi bi-grid-fill"></i> Products</a>
+      <a href="orders.html" class="nav-link"><i class="bi bi-receipt"></i> Orders</a>
+      <a href="payments.html" class="nav-link active"><i class="bi bi-credit-card-fill"></i> Payments</a>
+    </div>
+    <div class="nav-actions">
+      <button class="theme-btn" id="themeToggle" title="Toggle theme">
+        <i class="bi bi-moon-stars-fill"></i>
+      </button>
+      <div class="nav-badge">
+        <i class="bi bi-circle-fill pulse-green"></i> 3 Services UP
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="page-hero-inner">
+    <div class="page-hero-icon"><i class="bi bi-credit-card-fill"></i></div>
+    <div>
+      <h1 class="page-hero-title">Payment Records</h1>
+      <p class="page-hero-sub">Managed by payment-service :8083 · Consumed from Kafka <code>order.placed</code> · 90% SUCCESS rate simulation</p>
+    </div>
+  </div>
+</section>
+
+<!-- MAIN -->
+<main class="main-content">
+
+  <div id="alertContainer" class="alert-zone"></div>
+
+  <div class="orders-layout">
+
+    <!-- SEARCH BY ORDER ID -->
+    <section class="content-section">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title"><i class="bi bi-receipt-cutoff"></i> Search by Order ID</h2>
+          <p class="section-sub">GET /api/payments/order/{id}</p>
+        </div>
+      </div>
+      <div class="glass-card">
+        <div class="search-row">
+          <input type="number" class="field-input" id="searchOrderId" placeholder="Enter Order ID (e.g. 1)" min="1"/>
+          <button class="btn-search" id="searchOrderBtn"><i class="bi bi-search"></i> Look Up</button>
+        </div>
+        <div id="paymentOrderResult" class="result-area">
+          <div class="empty-result">
+            <div class="empty-icon"><i class="bi bi-credit-card"></i></div>
+            <p>Enter an Order ID to view payment</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEARCH BY USER ID -->
+    <section class="content-section">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title"><i class="bi bi-person-lines-fill"></i> Search by User ID</h2>
+          <p class="section-sub">GET /api/payments/user/{userId}</p>
+        </div>
+      </div>
+      <div class="glass-card">
+        <div class="search-row">
+          <input type="text" class="field-input" id="searchUserId" placeholder="Enter User ID (e.g. user123)"/>
+          <button class="btn-search" id="searchUserBtn"><i class="bi bi-search"></i> Look Up</button>
+        </div>
+        <div id="paymentsUserResult" class="result-area">
+          <div class="empty-result">
+            <div class="empty-icon"><i class="bi bi-people-fill"></i></div>
+            <p>Enter a User ID to view payment history</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- PAYMENT INFO CARDS -->
+  <section class="content-section">
+    <div class="info-grid">
+      <div class="info-card info-green">
+        <div class="info-icon"><i class="bi bi-check-circle-fill"></i></div>
+        <div class="info-title">SUCCESS</div>
+        <div class="info-desc">Payment processed, order confirmed via Kafka</div>
+      </div>
+      <div class="info-card info-red">
+        <div class="info-icon"><i class="bi bi-x-circle-fill"></i></div>
+        <div class="info-title">FAILED</div>
+        <div class="info-desc">Insufficient funds — 10% simulated failure rate</div>
+      </div>
+      <div class="info-card info-blue">
+        <div class="info-icon"><i class="bi bi-arrow-repeat"></i></div>
+        <div class="info-title">PROCESSING</div>
+        <div class="info-desc">Kafka event consumed, payment in progress</div>
+      </div>
+      <div class="info-card info-amber">
+        <div class="info-icon"><i class="bi bi-key-fill"></i></div>
+        <div class="info-title">IDEMPOTENCY</div>
+        <div class="info-desc">Redis prevents duplicate payment processing</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <div class="footer-logo">Shop<span>Flow</span></div>
+      <p>Spring Boot Microservices Portfolio · <strong>Paila Akhil</strong></p>
+      <p class="footer-copy">© 2026 Paila Akhil. All rights reserved.</p>
+    </div>
+    <div class="footer-services">
+      <div class="footer-service-title">Service Status</div>
+      <div class="service-pill"><i class="bi bi-circle-fill text-success"></i> product-service :8081</div>
+      <div class="service-pill"><i class="bi bi-circle-fill text-success"></i> order-service :8082</div>
+      <div class="service-pill"><i class="bi bi-circle-fill text-success"></i> payment-service :8083</div>
+    </div>
+    <div class="footer-tech">
+      <div class="footer-service-title">Tech Stack</div>
+      <div class="tech-tags">
+        <span class="tech-tag">Spring Boot 3.5</span>
+        <span class="tech-tag">Apache Kafka</span>
+        <span class="tech-tag">Redis</span>
+        <span class="tech-tag">MySQL 8</span>
+        <span class="tech-tag">Docker</span>
+        <span class="tech-tag">Java 21</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  (function(){
+    const saved = localStorage.getItem('sfTheme') || 'dark';
+    document.documentElement.setAttribute('data-theme', saved);
+    function updateIcon(){
+      const t = document.getElementById('themeToggle');
+      if(t) t.innerHTML = document.documentElement.getAttribute('data-theme')==='dark'
+        ? '<i class="bi bi-sun-fill"></i>' : '<i class="bi bi-moon-stars-fill"></i>';
+    }
+    document.addEventListener('DOMContentLoaded',()=>{
+      updateIcon();
+      document.getElementById('themeToggle')?.addEventListener('click',()=>{
+        const cur = document.documentElement.getAttribute('data-theme');
+        const next = cur==='dark'?'light':'dark';
+        document.documentElement.setAttribute('data-theme',next);
+        localStorage.setItem('sfTheme',next);
+        updateIcon();
+      });
+    });
+  })();
+</script>
+<script src="app.js"></script>
+<script>
+  const PAY_API = 'http://localhost:8083/api/payments';
+
+  function fmtDate(s){ if(!s)return'—'; const d=new Date(s); return d.toLocaleString('en-IN',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}); }
+  function fmtPrice(p){ return new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',minimumFractionDigits:2}).format(p); }
+
+  function payBadge(status){
+    const m = {
+      'SUCCESS':'<span class="status-badge s-confirmed"><i class="bi bi-check-circle-fill"></i> SUCCESS</span>',
+      'FAILED':'<span class="status-badge s-failed"><i class="bi bi-x-circle-fill"></i> FAILED</span>',
+      'PROCESSING':'<span class="status-badge s-processing"><i class="bi bi-arrow-repeat"></i> PROCESSING</span>',
+      'REFUNDED':'<span class="status-badge s-cancelled"><i class="bi bi-arrow-counterclockwise"></i> REFUNDED</span>'
+    };
+    return m[status] || `<span class="status-badge s-pending">${status}</span>`;
+  }
+
+  async function searchPaymentByOrder(){
+    const id = document.getElementById('searchOrderId')?.value?.trim();
+    const el = document.getElementById('paymentOrderResult');
+    if(!id){ el.innerHTML='<div class="empty-result"><div class="empty-icon"><i class="bi bi-exclamation-circle"></i></div><p>Please enter an Order ID</p></div>'; return; }
+    el.innerHTML='<div class="loading-inline"><div class="loader-sm"></div> Loading...</div>';
+    try {
+      const r = await fetch(`${PAY_API}/order/${id}`);
+      if(!r.ok) throw new Error(`HTTP ${r.status}`);
+      const p = await r.json();
+      el.innerHTML = `
+        <div class="result-card">
+          <div class="result-status-row">${payBadge(p.status)}</div>
+          <div class="result-amount">${fmtPrice(p.amount)}</div>
+          <div class="result-rows">
+            <div class="result-row"><span>Payment ID</span><strong>#${p.id}</strong></div>
+            <div class="result-row"><span>Order ID</span><strong>${p.orderId}</strong></div>
+            <div class="result-row"><span>User ID</span><strong>${p.userId||'—'}</strong></div>
+            ${p.failureReason?`<div class="result-row"><span>Failure</span><strong class="text-danger">${p.failureReason}</strong></div>`:''}
+            <div class="result-row"><span>Created</span><strong>${fmtDate(p.createdAt)}</strong></div>
+          </div>
+        </div>`;
+    } catch(e){
+      el.innerHTML=`<div class="empty-result"><div class="empty-icon"><i class="bi bi-search"></i></div><p>${e.message}</p></div>`;
+    }
+  }
+
+  async function searchPaymentsByUser(){
+    const uid = document.getElementById('searchUserId')?.value?.trim();
+    const el = document.getElementById('paymentsUserResult');
+    if(!uid){ el.innerHTML='<div class="empty-result"><div class="empty-icon"><i class="bi bi-exclamation-circle"></i></div><p>Please enter a User ID</p></div>'; return; }
+    el.innerHTML='<div class="loading-inline"><div class="loader-sm"></div> Loading...</div>';
+    try {
+      const r = await fetch(`${PAY_API}/user/${uid}`);
+      if(!r.ok) throw new Error(`HTTP ${r.status}`);
+      const payments = await r.json();
+      if(!payments||payments.length===0){
+        el.innerHTML='<div class="empty-result"><div class="empty-icon"><i class="bi bi-inbox"></i></div><p>No payments found</p></div>';
+        return;
+      }
+      el.innerHTML = `<div class="payments-list">${payments.map(p=>`
+        <div class="payment-item-card">
+          <div class="pic-header">
+            <strong>Payment #${p.id}</strong>
+            ${payBadge(p.status)}
+          </div>
+          <div class="pic-body">
+            <span>Order #${p.orderId}</span>
+            <span class="pic-amount">${fmtPrice(p.amount)}</span>
+            <span class="pic-date">${fmtDate(p.createdAt)}</span>
+          </div>
+        </div>`).join('')}</div>`;
+    } catch(e){
+      el.innerHTML=`<div class="empty-result"><div class="empty-icon"><i class="bi bi-search"></i></div><p>${e.message}</p></div>`;
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded',()=>{
+    document.getElementById('searchOrderBtn')?.addEventListener('click',searchPaymentByOrder);
+    document.getElementById('searchOrderId')?.addEventListener('keypress',e=>{ if(e.key==='Enter') searchPaymentByOrder(); });
+    document.getElementById('searchUserBtn')?.addEventListener('click',searchPaymentsByUser);
+    document.getElementById('searchUserId')?.addEventListener('keypress',e=>{ if(e.key==='Enter') searchPaymentsByUser(); });
+  });
+</script>
+</body>
+</html>
